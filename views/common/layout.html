@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<title>网销大师后台管理中心</title>
+	{{.HtmlHead}}
+<body class="no-skin" style="height:100%;">
+	<div id="navbar" class="navbar navbar-default" style="height:100%;">
+		<div class="navbar-container" id="navbar-container">
+			<div class="navbar-header pull-left">
+				<a href="#" class="navbar-brand">
+					<small>
+						<i class="fa fa-leaf"></i>
+						网销大师后台管理中心
+					</small>
+				</a>
+			</div>
+			<div class="navbar-buttons navbar-header pull-right" role="navigation">
+				<ul class="nav ace-nav">
+					<li class="purple">
+						<a class="dropdown-toggle" href="/logout">
+	                        <i class="ace-icon fa fa-sign-out"></i>
+	                        <span>退出</span>
+						</a>
+					</li>
+					<li class="light-blue">
+						<a href="#" class="dropdown-toggle">
+						<strong>Welcome, {{.user.Username}}</strong>
+						</a>
+
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="main-container" id="main-container" >
+			{{.HtmlLeft}}
+			<div class="main-content" >
+				<div style="height:1200px;">
+					<iframe name="mainFrame" id="mainFrame" frameborder="0" scrolling="no" src="/main" style="margin:0 auto;width:100%;height:100%;"></iframe>
+				</div>
+			</div>
+	{{.HtmlFooter}}
+	</div>
+</body>
+</html>

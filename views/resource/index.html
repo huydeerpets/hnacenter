@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>皓月交易系统</title>
+	{{template "/common/html_head.html"}}
+</head>
+<body class="no-skin">
+	<div class="main-container" id="main-container">
+		<div class="main-content">
+			<div class="page-content">
+				<div class="page-content-area">
+					<div class="page-header">
+						<h1> 角色管理 <small> 全部角色 </small> </h1>
+					</div>
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="row">
+								<div class="col-xs-12">
+									<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+										<thead>
+											<tr>
+												<th align="left"><input type="checkbox" style="left:auto; " id='checkAll' style=""></th>
+													<th>资源Key</th>
+													<th>资源级别</th>
+													<th>资源父key</th>、
+													<th>资源链接</th>
+													<th>资源状态</th>
+													<th>资源排序</th>
+													<th>资源图标</th>
+													<th>业务/功能</th>
+													<th>操作</th>
+											</tr>
+										</thead>
+										<tbody id="data_body">
+											</tbody>
+										</table>
+									</div>
+								</div>
+							<div class="hr hr32 hr-dotted"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> 
+</body>
+</html>
+
+<script type="text/javascript">
+	// 删除用户信息
+	function deleteResource(id) {
+		$.messager.confirm("提示框","你确定要删除吗",function(){
+			window.location = "/ihytrade/resource/delete?Id=" + id;
+		});
+	}
+</script>
+<script type="text/javascript">
+	var oTable;
+	$(document).ready(function() {
+	      oTable= initTable();
+	});
+	function initTable() {
+	    var actionUrl='../resource/list';
+	    var table =$('#sample-table-1').dataTable({
+	    	"bFilter": false, 
+	        "bAutoWidth": false,  
+	        "sPaginationType" : 'full_numbers',
+	        "bPaginate": true, //翻页功能
+	        "bDestroy" : true,
+	        "bProcessing" : true,
+	        "sAjaxSource" : actionUrl,
+	        "iDisplayLength":10,
+	        "aLengthMenu": [[10, 15,20, 50, -1], [10, 15, 20,50, "All"]],
+	        "bServerSide" : true,
+	        "bSort":false,
+	        "aoColumns" : [
+		        {
+		        	"mDataProp": "Id",
+		        	"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+		        		$(nTd).html("<input type='checkbox' align='center' name='checkList' value='" + sData + "'>"); }
+		        	},
+		        	{"mDataProp" : "Reskey",},
+		        	{"mDataProp" : "Level",},
+		        	{"mDataProp" : "PName",},
+		        	{"mDataProp" : "Url",},
+		        	{"mDataProp" : "Statusname",},
+		        	{"mDataProp" : "Sort",},
+		        	{"mDataProp" : "Ico",}, 
+		        	{"mDataProp" : "IsFunctionName",}, 
+		        	{
+		        		"mDataProp": "Id",
+		        		"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+		        			$(nTd).html("<a style='cursor:pointer;' href='http://{{.ActionUrl}}/ihytrade/resource/edit?Id="+ oData.Id + "'>编辑</a>&nbsp;&nbsp;").append("<a style='cursor:pointer;' onclick='deleteResource(" + oData.Id + ")'>删除</a>");
+				        }
+				    }
+				    ],
+			"oLanguage" : {
+				"sProcessing" : "正在加载中......",
+				"sLengthMenu" : "每页显示 _MENU_ 条记录",
+				"sZeroRecords" : "没有数据！",
+				"sEmptyTable" : "表中无数据存在！",
+				"sInfo" : "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+				"sInfoEmpty" : "显示0到0条记录",
+				"sInfoFiltered" : "数据表中共为 _MAX_ 条记录",
+				"oPaginate" : {
+					"sFirst" : "首页",
+					"sPrevious" : "上一页",
+					"sNext" : "下一页",
+					"sLast" : "末页"
+				}
+			}
+		});
+		return table;
+	}
+</script>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>皓月交易系统</title>
+	{{template "/common/html_head.html"}}
+	<script src="http://libs.baidu.com/jquery/1.9.1/juery.js"></script>
+</head>
+<body class="no-skin">
+	<div class="main-container" id="main-container">
+		<div class="main-content">
+			<div class="page-content">
+				<div class="page-content-area">
+					<div class="page-header">
+						<h1> 公司管理 <small> 公司列表 </small> </h1>
+					</div>
+					<div>
+					<form action="/hnacenter/company/select" method="post">
+						<label>省份</label>
+						<select id="province" name="province">
+							<option selected="selected" id="selected">全国</option>
+							{{range $k,$v:=.provice}}
+							<option style="width:100px">{{$v.Provincename}}</option>
+							{{end}}
+						</select>
+						<input type="text" name="conditions" id="conditions" style="width:200px;height:30px; margin-left:60px;" >
+						<select name="filters" id="filter">
+							<option selected="selected">公司代码</option>
+							<option>公司名</option>
+							<option>状态</option>
+						</select>
+						<input type="button" value="筛选" >
+						</form>
+					</div>
+					<div class="row">
+						<div class="col-xs-12">
+							<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+								<thead>
+									<tr>
+										<th><input type="checkbox" style="left:auto; " id='checkAll' style=""></th>
+										<th>公司代码</th>
+										<th>公司名</th>
+										<th>状态</th>
+										<th>注册时间</th>
+										<th>过期时间</th>
+										<th>个人设备最大数量</th>
+										<th>公司设备最大数量</th>
+										<th>操作</th>
+									</tr>
+								</thead>
+								<tbody id="data_body"></tbody>
+							</table>
+						</div>		
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</html>
+<script type="text/javascript">
+	var oTable;
+	$(document).ready(function() {
+	      oTable= initTable();
+	});
+	function initTable() {
+	    var actionUrl='../company/list';
+	    var table =$('#sample-table-1').dataTable({
+	    	"bFilter": false, 
+	        "bAutoWidth": false,  
+	        "sPaginationType" : 'full_numbers',
+	        "bPaginate": true, //翻页功能
+	        "bDestroy" : true,
+	        "bFilter":true,
+	        "bLengthChange":true,
+	        "bProcessing" : true,
+	        "sAjaxSource" : actionUrl,
+	        "iDisplayLength":10,
+	        "aLengthMenu": [[10, 15,20, 50, -1], [10, 15, 20,50, "All"]],
+	        "bServerSide" : true,
+	        "bSort":false,
+	        "bInfo":true,
+	        "aoColumns" : [
+		        {
+		        	"mDataProp": "Id",
+		        	"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+		        		$(nTd).html("<input type='checkbox' align='center' name='checkList' value='" + sData + "'>"); }
+		        	},
+		        	{"mDataProp" : "Code",},
+		        	{"mDataProp" : "Name",},
+		        	{"mDataProp" : "Statusname",},
+		        	{"mDataProp" : "AddTime",},
+		        	{"mDataProp" : "ExpirationTime",},
+		        	 {"mDataProp" : "UserMaxCount",},
+		        	 {"mDataProp" : "TotalMaxCount",},
+		        	{
+		        		"mDataProp": "Id",
+		        		"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+		        			$(nTd).html("<a style='cursor:pointer;' href='http://{{.ActionUrl}}/hnacenter/company/edit?Id="+ oData.Id + "'>编辑</a>&nbsp;&nbsp;").append("<a style='cursor:pointer;' onclick='changeCompany(" + oData.Id + ")'>更改状态</a>&nbsp;&nbsp;").append("<a style='cursor:pointer;' onclick='delCompany(" + oData.Id + ")'>删除</a>");
+				        }
+				    }
+				    ],
+			"oLanguage" : {
+				"sProcessing" : "正在加载中......",
+				"sLengthMenu" : "每页显示 _MENU_ 条记录",
+				"sZeroRecords" : "没有数据！",
+				"sEmptyTable" : "表中无数据存在！",
+				"sInfo" : "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+				"sInfoEmpty" : "显示0到0条记录",
+				"sInfoFiltered" : "数据表中共为 _MAX_ 条记录",
+				"sSearch":"搜索:",
+				"oPaginate" : {
+					"sFirst" : "首页",
+					"sPrevious" : "上一页",
+					"sNext" : "下一页",
+					"sLast" : "末页"
+				}
+				
+			}
+		});
+		return table;
+	}
+	// 删除公司信息
+	function delCompany(id) {
+		$.messager.confirm("提示框","你确定要删除吗",function(){
+			window.location = "/hnacenter/company/delete?Id=" + id;
+		});
+	}
+	//更改状态
+	function changeCompany(id){
+		$.messager.confirm("提示框","你确定要更改",function(){
+			window.location="/hnacenter/company/changestatus?Id="+ id;
+		});
+	}
+</script>
+<!--自定义的过滤事件 -->
+<script type="text/javascript">
+var province=$("#province").val()
+
+</script>
+	
+
+
+
+

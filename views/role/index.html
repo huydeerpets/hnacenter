@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>皓月交易系统</title>
+	{{template "/common/html_head.html"}}
+</head>
+<body class="no-skin">
+	<div class="main-container" id="main-container">
+		<div class="main-content">
+			<div class="page-content">
+				<div class="page-content-area">
+					<div class="page-header">
+						<h1> 角色管理 <small> 全部角色 </small> </h1>
+					</div>
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="row">
+								<div class="col-xs-12">
+									<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+										<thead>
+											<tr>
+												<th align="left"><input type="checkbox" style="left:auto; " id='checkAll' style=""></th>
+													<th>角色名</th>
+													<th>角色代码</th>
+													<th>备注</th>
+													<th>操作</th>
+											</tr>
+										</thead>
+										<tbody id="data_body">
+											</tbody>
+										</table>
+									</div>
+								</div>
+							<div class="hr hr32 hr-dotted"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 分配权限模态框 -->
+	<div class="modal fade" id="NoPermissionModal">
+	    <div class="modal-dialog" style="width: 400px;">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	                <h4 class="modal-title" id="NoPermissionModalLabel">设置权限</h4>
+	            </div>
+	            <div class="modal-body" style="height: 400px;">
+	                <iframe id="NoPermissioniframe" width="100%" height="100%" frameborder="0"></iframe>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+</body>
+</html>
+<script>
+	function btnClick(id) {
+        var frameSrc = "/hnacenter/role/setPermission?Id=" + id;
+        $("#NoPermissioniframe").attr("src", frameSrc);
+        $('#NoPermissionModal').modal({show: true, backdrop: 'static'});
+	}
+</script>
+<script type="text/javascript">
+	var oTable;
+	$(document).ready(function() {
+	      oTable= initTable();
+	});
+	function initTable() {
+	    var actionUrl='../role/list';
+	    var table =$('#sample-table-1').dataTable({
+	    	"bFilter": false, 
+	        "bAutoWidth": false,  
+	        "sPaginationType" : 'full_numbers',
+	        "bPaginate": true, //翻页功能
+	        "bDestroy" : true,
+	        "bProcessing" : true,
+	        "sAjaxSource" : actionUrl,
+	        "iDisplayLength":10,
+	        "aLengthMenu": [[10, 15,20, 50, -1], [10, 15, 20,50, "All"]],
+	        "bServerSide" : true,
+	        "bSort":false,
+	        "aoColumns" : [
+		        {
+		        	"mDataProp": "Id",
+		        	"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+		        		$(nTd).html("<input type='checkbox' align='center' name='checkList' value='" + sData + "'>"); }
+		        	},
+		        	{"mDataProp" : "Name",},
+		        	{"mDataProp" : "Rolekey",},
+		        	{"mDataProp" : "Remark",}, 
+		        	{
+		        		"mDataProp": "Id",
+		        		"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+		        			$(nTd).html("<a style='cursor:pointer;' href='http://{{.ActionUrl}}/hnacenter/role/edit?Id="+ oData.Id + "'>编辑</a>&nbsp;&nbsp;").append("<a style='cursor:pointer;' onclick='deleteRole(" + oData.Id + ")'>删除</a>&nbsp;&nbsp;").append("<a style='cursor:pointer;' onclick='btnClick(" + oData.Id + ")'>设置权限</a>");
+				        }
+				    }
+				    ],
+			"oLanguage" : {
+				"sProcessing" : "正在加载中......",
+				"sLengthMenu" : "每页显示 _MENU_ 条记录",
+				"sZeroRecords" : "没有数据！",
+				"sEmptyTable" : "表中无数据存在！",
+				"sInfo" : "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+				"sInfoEmpty" : "显示0到0条记录",
+				"sInfoFiltered" : "数据表中共为 _MAX_ 条记录",
+				"oPaginate" : {
+					"sFirst" : "首页",
+					"sPrevious" : "上一页",
+					"sNext" : "下一页",
+					"sLast" : "末页"
+				}
+			}
+		});
+		return table;
+	}
+
+
+	// 删除用户信息
+	function deleteRole(id) {
+		$.messager.confirm("提示框","你确定要删除吗",function(){
+			window.location = "/hnacenter/role/del?Id=" + id;
+		});
+	}
+</script>

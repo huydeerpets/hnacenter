@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>皓月交易系统</title>
+	{{template "/common/html_head.html"}}
+	<link rel="stylesheet" type="text/css" href="/static/css/ztree/metroStyle/metroStyle.css">
+	<!-- <script src="/static/js/ztree/jquery-1.4.4.min.js"></script> -->
+	<script src="/static/js/ztree/jquery.ztree.all.min.js"></script>
+	<script src="/static/js/ztree/jquery.ztree.core.js"></script>
+	<script src="/static/js/ztree/jquery.ztree.excheck.js"></script>
+	<script type="text/javascript">
+			var Ids = "";
+	        var setting = {  
+	            view: {  
+	                selectedMulti: false        //禁止多点选中  
+	            }, 
+	            check: {
+	                enable: true,
+	                nocheckInherit: false
+	            },
+	            data: {  
+	                simpleData: {  
+	                    enable:true,  
+	                    idKey: "Id",  
+	                    pIdKey: "Fid"
+	                },
+	                key: {
+						name: "Reskey"
+					}
+	            },
+	            callback: {
+	                onCheck: function(event, treeId, treeNode){
+	                	var treeObj = $.fn.zTree.getZTreeObj("treeData");
+		            	nodes = treeObj.getCheckedNodes(true);
+		            	var v = "";
+		            	for (var i = 0; i < nodes.length; i++) {
+		            		v += nodes[i].Id + ",";
+		            	}
+		            	v = v.substring(0,v.length-1);
+		            	Ids = v;
+		            	console.log(Ids);
+	                }
+	            }
+        	};
+        	var zNodes = {{.json}}; 
+	        $(document).ready(function(){  
+	            $.fn.zTree.init($("#treeData"), setting, zNodes);
+	            $("#btnClick").click(function(){
+		        	$.ajax({
+			     		type : "post",
+			    		url : "/hnacenter/role/permission",
+			      		data : {Id:{{.role.Id}}, Ids:Ids},
+			      		dataType : "json",
+			       		success : function(data, status, xhr){
+			       			if (data.status == true) {
+		       					alert(data.info);
+								parent.window.location = "/hnacenter/role/list";
+			       			} else {
+			      				alert(data.info);
+								parent.window.location = "/hnacenter/role/list";
+			        		}
+			        	},
+			          	error : function(data, status, xhr) {
+			           		alert("网络错误！");
+			           		parent.window.location = "/hnacenter/role/list";
+			        	}
+		           	});
+		        });
+	        });
+	</script>
+</head>
+<body class="no-skin">
+<div class="main-container" id="main-container">
+	<div class="main-content">
+		<div class="page-content">
+			<div class="row" align="center">
+				<div class="form-group">
+					<input type="hidden" name="isAction" value="0"/>
+					<input type="hidden" name="Ids"/>
+					<input type="hidden" name="Id" value="{{.role.Id}}" />
+					<ul id="treeData" class="ztree" ></ul>
+				</div>
+				<div class="form-group">
+					<button id="btnClick" class="btn btn-info">设置</button>
+					<button id="reset" class="btn">重置</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

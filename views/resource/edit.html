@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>皓月交易系统</title>
+	{{template "/common/html_head.html"}}
+</head>
+<body class="no-skin">
+	<div class="main-container" id="main-container">
+		<div class="main-content">
+			<div class="page-content">
+				<div class="page-content-area">
+					<div class="page-header">
+						<h1> 资源管理 <small> 修改资源 </small> </h1>
+					</div>
+				</div>
+				<div class="row" align="center">
+					<form class="form-horizontal" style="margin-top:30px;" action="../resource/edit" method="post">
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="form-field-1">资源名称：</label>
+							<div class="col-sm-4">
+								<input type="hidden" name="isAction" value="0"/>
+								<input type="hidden" class="form-control" id="Id" name="Id" value="{{.resource.Id}}" />
+								<input type="hidden" class="form-control" id="Isfunction" name="Isfunction" value="{{.resource.Isfunction}}" />
+								<input type="text" class="form-control" id="Reskey" value="{{.resource.Reskey}}" 
+									placeholder="请输入资源名称" required autofocus/>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="form-field-1">资源级别：</label>
+							<div class="col-sm-4">
+								<input type="text" class="form-control" id="Level" name="Level" value="{{.resource.Level}}" 
+									placeholder="请输入资源级别" required autofocus/>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="form-field-2">上级资源：</label>
+							<div class="col-sm-4">
+								<select class="form-control" name="Fid" disabled="true">
+									{{if eq .resource.Fid 0}}
+										<option value="0">顶级机构</option>
+										{{else if ne .resource.Fid 0}}
+											<option value="{{.res.Id}}">{{.res.Reskey}}</option>
+										{{else}}
+									{{end}}
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="form-field-2">资源链接：</label>
+							<div class="col-sm-4">
+								<input type="text" class="form-control" id="Url" name="Url" value="{{.resource.Url}}" 
+									value="" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="form-field-2">资源状态：</label>
+							<div class="col-sm-4">
+								{{if eq .resource.Status 0}}
+								<label class="col-sm-2">
+									<input name="form-field-radio" type="radio" name="Status" value="0" checked><span class="lbl"> 启用 </span>
+								</label>
+								<label class="col-sm-2">
+									<input name="form-field-radio" type="radio" name="Status" value="1"><span class="lbl"> 禁用 </span>
+								</label>
+								<label class="col-sm-2">
+									<input name="form-field-radio" type="radio" name="Status" value="2"><span class="lbl"> 其他 </span>
+								</label>
+								{{end}}
+								{{if eq .resource.Status 1}}
+								<label class="col-sm-2">
+									<input name="form-field-radio" type="radio" name="Status" value="0"><span class="lbl"> 启用 </span>
+								</label>
+								<label class="col-sm-2">
+									<input name="form-field-radio" type="radio" name="Status" value="1" checked><span class="lbl"> 禁用 </span>
+								</label>
+								<label class="col-sm-2">
+									<input name="form-field-radio" type="radio" name="Status" value="2"><span class="lbl"> 其他 </span>
+								</label>
+								{{end}}
+								{{if eq .resource.Status 1}}
+								<label class="col-sm-2">
+									<input name="form-field-radio" type="radio" name="Status" value="0"><span class="lbl"> 启用 </span>
+								</label>
+								<label class="col-sm-2">
+									<input name="form-field-radio" type="radio" name="Status" value="1"><span class="lbl"> 禁用 </span>
+								</label>
+								<label class="col-sm-2">
+									<input name="form-field-radio" type="radio" name="Status" value="2" checked><span class="lbl"> 其他 </span>
+								</label>
+								{{end}}
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="form-field-2">资源排序：</label>
+							<div class="col-sm-4">
+								<input type="text" class="form-control" id="Sort" name="Sort" value="{{.resource.Sort}}" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="form-field-2">资源图标：</label>
+							<div class="col-sm-4">
+								<input type="text" class="form-control" id="Ico" name="Ico" value="{{.resource.Ico}}" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="form-field-2">业务/功能：</label>
+							<div class="col-sm-4">
+								<select class="form-control" name="Isfunction">
+									{{if eq .resource.Isfunction 0}}
+										<option value="0" selected>业务</option>
+										<option value="1">功能</option>
+									{{end}}
+									{{if eq .resource.Isfunction 1}}
+										<option value="0">业务</option>
+										<option value="1" selected>功能</option>
+									{{end}}
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<input class="btn btn-info" type="submit" value="修改" />
+							<input class="btn" type="reset" value="重置"/>
+						</div>
+		
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

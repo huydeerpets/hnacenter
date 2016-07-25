@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>网销大师后台管理中心</title>
+	{{template "/common/html_head.html"}}
+	<link rel="stylesheet" type="text/css" href="/static/css/ztree/metroStyle/metroStyle.css">
+	<!-- <script src="/static/js/ztree/jquery-1.4.4.min.js"></script> -->
+	<script src="/static/js/ztree/jquery.ztree.all.min.js"></script>
+	<script src="/static/js/ztree/jquery.ztree.core.js"></script>
+	<script src="/static/js/ztree/jquery.ztree.excheck.js"></script>
+</head>
+<body class="no-skin">
+	<div class="main-container" id="main-container">
+		<div class="main-content">
+			<div class="page-content">
+				<div class="page-content-area">
+					<div class="page-header">
+						<h1> 公司管理<small> 添加公司 </small> </h1>
+				<script type="text/javascript">
+	$(".nav-header").on("click",function(){
+		if($(this).find(".icon-chevron-down").hasClass("active")){
+			$(this).find(".icon-chevron-down").removeClass("active");
+		}else{
+			$(this).find(".icon-chevron-down").addClass("active");
+		}
+	});
+</script>
+<script type="text/javascript">
+    $(function() {
+        $(".knob").knob();
+    });
+</script>
+<script type="text/javascript">
+    $(function() {
+        var match = document.cookie.match(new RegExp('color=([^;]+)'));
+        if(match) var color = match[1];
+        if(color) {
+            $('body').removeClass(function (index, css) {
+                return (css.match (/\btheme-\S+/g) || []).join(' ')
+            })
+            $('body').addClass('theme-' + color);
+        }
+        $('[data-popover="true"]').popover({html: true});
+    });
+</script>
+<script type="text/javascript">
+    $(function() {
+        var uls = $('.sidebar-nav > ul > *').clone();
+        uls.addClass('visible-xs');
+        $('#main-menu').append(uls.clone());
+    });
+</script>
+<script type="text/javascript">
+    $("[rel=tooltip]").tooltip();
+    $(function() {
+        $('.demo-cancel-click').click(function(){return false;});
+    });
+</script>
+<div class="content">
+    <div class="header" style="margin: 0px 0em 0em 0em;">
+                <ul class="breadcrumb">
+    </ul>
+    </div>
+<div class="main-content">
+<br>
+
+<ul class="nav nav-tabs">
+  <li class="active"><a href="#home" data-toggle="tab">基本信息</a></li>
+  <li><a href="#profile" data-toggle="tab">扩展信息</a></li>
+</ul>
+
+<form id="form" action="../company/add" method="post">
+<div class="row">
+  <div class="col-md-4">
+    <div id="myTabContent" class="tab-content">
+        <br>
+        <div class="tab-pane active in" id="home">
+            <input type="hidden" name="isAction" value="0"/>
+            <div class="form-group">
+              <label>公司代码：</label>
+              <input type="text" value="" name="Code" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>公司名：</label>
+              <input type="text" value="" name="Name" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>状态：</label>
+              <select name="Status" id="Status" class="form-control">
+                <option value="1">正常</option>
+                <option value="0">关闭</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>注册时间：</label>
+              <input type="text" value="" id="addtime" class="form-control" required>
+              <input type="hidden" id="AddTime" name="AddTime" value="" />
+            </div>
+            <div class="form-group">
+              <label>过期时间：</label>
+              <input type="text" value="" id="time" class="form-control" required>
+              <input type="hidden" id="ExpirationTime" name="ExpirationTime" value="" />
+            </div>
+            <div class="form-group">
+              <label>个人设备最大数量：</label>
+              <select class="form-control" id="UserMaxCount" name="UserMaxCount">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>公司设备最大数量：</label>
+              <input type="text" value="" name="TotalMaxCount" class="form-control" required>
+            </div>
+            <div class="form-group">
+            <label>设备登陆地址：</label>
+            <input type="text" value="" name="LoginUrl" class="form-control" required>
+            </div>
+            <div class="form-group">
+            <label>下载联系人地址：</label>
+            <input type="text" value="" name="CustomerUrl" class="form-control" required>
+            </div>
+            <div class="form-group">
+            <label>微信记录接口：</label>
+            <input type="text" value="" name="WechatDataUrl" class="form-control" required>
+            </div>
+            <div class="form-group">
+            <label>图片地址：</label>
+            <input type="text" value="" name="ImagesUrl" class="form-control" required>
+            </div>
+            <div class="form-group">
+            <label>软件升级地址：</label>
+            <input type="text" value="" name="UpdateUrl" class="form-control" required>
+            </div>
+          
+            <div class="form-group form-inline">
+            <label>是否推送资源：</label>
+              <div class="checkbox">
+                <label>
+                  <input name="CusttomerPush" value="1" type="radio"> 开　
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input name="CusttomerPush" value="0" type="radio" checked=""> 关
+                </label>
+              </div>
+            </div>
+
+            <div id="customeruser" style="display:none" class="form-group">
+            <label>资源管理帐号：</label>
+            <input type="text" value="" name="CustomerUser" class="form-control">
+            </div>
+        </div>
+        <div class="tab-pane fade" id="profile">
+            <div class="form-group">
+            <label>软件版本：</label>
+            <input type="text" value="" name="SoftVersion" class="form-control" required>
+            </div>
+            <div class="form-group">
+            <label>软件更新地址：</label>
+            <input type="text" value="" name="SoftUpdateUrl" class="form-control" required>
+            </div>
+            <div class="form-group">
+            <label>文件MD5值：</label>
+            <input type="text" value="" name="SoftMd5" class="form-control" required>
+            </div>
+            <div class="form-group">
+            <label>软件描述：</label>
+            <input type="text" value="" name="SoftDescribe" class="form-control" required>
+            </div>
+            <div class="form-group">
+            <label>软件清空数据：</label>
+            <select class="form-control" id="SoftCleardata" name="SoftCleardata">
+              <option value="0">清空</option>
+              <option value="1">不清空</option>
+            </select>
+            </div>
+            <div class="form-group">
+            <label>ROM版本：</label>
+            <input type="text" value="" name="RomVersion" class="form-control" required>
+            </div>
+            <div class="form-group">
+            <label>ROM更新地址：</label>
+            <input type="text" value="" name="RomUpdateUrl" class="form-control" required>
+            </div>
+            <div class="form-group">
+            <label>ROM文件MD5值：</label>
+            <input type="text" value="" name="RomMd5" class="form-control" required>
+            </div>
+            <div class="form-group">
+            <label>ROM描述：</label>
+            <input type="text" value="" name="RomDescribe" class="form-control" required>
+            </div>
+            <div class="form-group">
+            <label>ROM清空数据：</label>
+            <select class="form-control" id="RomCleardata" name="RomCleardata" >
+              <option value="0">清空</option>
+              <option value="1">不清空</option>
+            </select>
+            </div>
+            <div class="form-group">
+            <label>APK版本号：</label>
+            <input type="text" value="" name="ApkVersion" class="form-control" required>
+            </div>
+            <div class="form-group">
+            <label>APK升级URL：</label>
+            <input type="text" value="" name="ApkUpdateUrl" class="form-control" required>
+            </div>
+            <div class="form-group">
+            <label>APK文件MD5值：</label>
+            <input type="text" value="" name="ApkMd5" class="form-control" required>
+            </div>
+            <div class="form-group">
+            <label>APK升级描述：</label>
+            <input type="text" value="" name="ApkDescribe" class="form-control" required>
+            </div>
+            <div class="form-group">
+            <label>APK清空数据：</label>
+            <select class="form-control" id="ApkClerdata" name="ApkClerdata">
+              <option value="0">清空</option>
+              <option value="1">不清空</option>
+            </select>
+            </div>
+            
+            <div class="bs-callout bs-callout-info form-group form-inline">
+                  <div>
+                  <label>下载资源开关 :　</label>
+                  <div class="checkbox">
+                    <label>
+                      <input name="FuncCustomer" value="1" type="radio"> 开　
+                    </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input name="FuncCustomer" value="0" type="radio" checked=""> 关
+                    </label>
+                  </div>
+                  </div>
+                  
+                  <div>
+                  <label>下载图片开关 :　</label>
+                  <div class="checkbox">
+                    <label>
+                      <input name="FuncImage" value="1" type="radio"> 开　
+                    </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input name="FuncImage" value="0" type="radio" checked=""> 关
+                    </label>
+                  </div>
+                  </div>
+                  
+                  <div>
+                  <label>上传微信记录 :　</label>
+                  <div class="checkbox">
+                    <label>
+                      <input name="FuncUploadWechat" value="1" type="radio"> 开　
+                    </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input name="FuncUploadWechat" value="0" type="radio" checked=""> 关
+                    </label>
+                  </div>
+                  </div>
+                  
+                  <div>
+                  <label>资源限定开关 :　</label>
+                  <div class="checkbox">
+                    <label>
+                      <input name="FuncLimitCustomer" value="1" type="radio"> 开　
+                    </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input name="FuncLimitCustomer" value="0" type="radio" checked=""> 关
+                    </label>
+                  </div>
+                  </div>
+                  
+                  <div>
+                  <label>自动添加开关 :　</label>
+                  <div class="checkbox">
+                    <label>
+                      <input name="FuncAutoAdd" value="1" type="radio"> 开　
+                    </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input name="FuncAutoAdd" value="0" type="radio" checked=""> 关
+                    </label>
+                  </div>
+                  </div>
+                  
+                  <div>
+                  <label>自动搜索开关 :　</label>
+                  <div class="checkbox">
+                    <label>
+                      <input name="FuncAutoSearch" value="1" type="radio"> 开　
+                    </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input name="FuncAutoSearch" value="0" type="radio" checked=""> 关
+                    </label>
+                  </div>
+                  </div>
+                  
+                  <div>
+                  <label>开启定位开关 :　</label>
+                  <div class="checkbox">
+                    <label>
+                      <input name="FuncLocation" value="1" type="radio"> 开　
+                    </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input name="FuncLocation" value="0" type="radio" checked=""> 关
+                    </label>
+                  </div>
+                  </div>
+                  
+                  <div>
+                  <label>开启摇摇开关 :　</label>
+                  <div class="checkbox">
+                    <label>
+                      <input name="FuncShake" value="1" type="radio"> 开　
+                    </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input name="FuncShake" value="0" type="radio" checked=""> 关
+                    </label>
+                  </div>
+                  </div>
+                  
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+<div>
+    <button class="btn btn-primary"><i class="fa fa-save"></i> 保存</button>
+</div>
+</form>
+
+		<div class="modal fade" id="myModal">  
+		    <div class="modal-dialog" >  
+		        <div class="modal-content">  
+		            <div class="modal-header">  
+		                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		                <h4 class="modal-title" id="NoPermissionModalLabel">角色选择</h4>  
+		            </div>  
+					<div class="modal-body" style="height: 500px;"> 
+						<ul id="treeDemo" class="ztree"></ul>
+					</div>  
+					<div class="modal-footer">
+						<button class="btn btn-info" type="button" onclick="save();">    保  存    </button>  
+						<button class="btn btn-info" type="button" data-dismiss="modal">    关  闭    </button>  
+					</div>  
+		        </div>  
+		    </div>  
+		</div>  
+	</body>
+</html>
+	

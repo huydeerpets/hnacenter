@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>皓月交易系统</title>
+	{{template "/common/html_head.html"}}
+</head>
+<body class="no-skin">
+	<div class="main-container" id="main-container">
+		<div class="main-content">
+			<div class="page-content">
+				<div class="page-content-area">
+					<div class="page-header">
+						<h1> 资源管理 <small> 新增资源 </small> </h1>
+					</div>
+				</div>
+				<div class="row" align="center">
+					<form class="form-horizontal" style="margin-top:30px;" method="post" action="../resource/add">
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="form-field-1">资源名称：</label>
+							<div class="col-sm-4">
+								<input type="hidden" name="isAction" value="0"/>
+								<input type="text" class="form-control" id="Reskey" name="Reskey" 
+									placeholder="请输入资源名称" required autofocus/>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="form-field-1">资源级别：</label>
+							<div class="col-sm-4">
+								<input type="text" class="form-control" id="Level" name="Level" 
+									placeholder="请输入资源级别" required autofocus/>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="form-field-2">上级资源：</label>
+							<div class="col-sm-4">
+								<label class="col-sm-2"> 资源名称 </label>
+								<input onclick="test();" class="btn btn-primary" type="button" name="" value="请选择..."/>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="form-field-2">资源链接：</label>
+							<div class="col-sm-4">
+								<input type="text" class="form-control" id="Url" name="Url" 
+									placeholder="请输入资源链接" required autofocus/>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="form-field-2">资源状态：</label>
+							<div class="col-sm-4">
+								<label class="col-sm-2">
+									<input name="form-field-radio" type="radio" name="Status" value="0"><span class="lbl"> 启用 </span>
+								</label>
+								<label class="col-sm-2">
+									<input name="form-field-radio" type="radio" name="Status" value="1"><span class="lbl"> 禁用 </span>
+								</label>
+								<label class="col-sm-2">
+									<input name="form-field-radio" type="radio" name="Status" value="2"><span class="lbl"> 其他 </span>
+								</label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="form-field-2">资源排序：</label>
+							<div class="col-sm-4">
+								<input type="text" class="form-control" id="Sort" name="Sort" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="form-field-2">资源图标：</label>
+							<div class="col-sm-4">
+								<input type="text" class="form-control" id="Ico" name="Ico" placeholder="请输入资源图标"/>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="form-field-2">业务/功能：</label>
+							<div class="col-sm-4">
+								<select class="form-control" name="Isfunction">
+									<option value="0">业务</option>
+									<option value="1">功能</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<input class="btn btn-info" type="submit" value="新增" />
+							<input class="btn" type="reset" value="重置"/>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+
+		<script type="text/javascript">
+		    function test() {
+		    	var frameSrc = "/ihytrade/resource/tree"
+				$('#NoPermissioniframe').attr('src',frameSrc);
+		        $('#myModal').modal({show: true, backdrop: 'static'});
+		    }
+
+		    function save(){
+				$('#myModal').modal('hide');
+		    }
+
+		</script>
+		<div class="modal fade" id="myModal">  
+		    <div class="modal-dialog" >  
+		        <div class="modal-content">  
+		            <div class="modal-header">  
+		                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		                <!-- <button type="button" class="close" onclick="window.history.go(-1);">×</button>   -->
+		                <h4 class="modal-title" id="NoPermissionModalLabel">资源信息</h4>  
+		            </div>  
+					<div class="modal-body" style="height: 500px;">  
+		                <iframe id="NoPermissioniframe" width="100%" height="100%" frameborder="0"></iframe>  
+					</div>  
+					<div class="modal-footer">
+						<button class="btn btn-info" type="button" onclick="save();">    保  存    </button>  
+						<button class="btn btn-info" type="button" data-dismiss="modal">    关  闭    </button>  
+					</div>  
+		        </div>  
+		    </div>  
+		</div>  
+	</body>
+</html>

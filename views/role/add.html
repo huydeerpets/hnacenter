@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>皓月交易系统</title>
+	{{template "/common/html_head.html"}}
+</head>
+<body class="no-skin">
+	<div class="main-container" id="main-container">
+		<div class="main-content">
+			<div class="page-content">
+				<div class="page-content-area">
+					<div class="page-header">
+						<h1> 角色管理 <small> 新增角色 </small> </h1>
+					</div>
+				</div>
+				<div class="row" align="center">
+					<form class="form-horizontal" style="margin-top:30px;" method="post" action="../role/add">
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="form-field-1">角色名称：</label>
+							<div class="col-sm-4">
+								<input type="hidden" name="isAction" value="0"/>
+								<input type="text" class="form-control" id="Name" name="Name" 
+									placeholder="请输入角色名称" required autofocus/>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="form-field-1">角色代码：</label>
+							<div class="col-sm-4">
+								<input type="text" class="form-control" id="Rolekey" name="Rolekey" 
+									placeholder="请输入角色代码" required autofocus/>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="form-field-2">备注：</label>
+							<div class="col-sm-4">
+								<textarea class="form-control" rows="3" style="resize:none;" id="Remark" name="Remark" placeholder="请输入备注"></textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<input class="btn btn-info" type="submit" value="新增" />
+							<input class="btn" type="reset" value="重置"/>
+						</div>
+		
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>皓月交易系统</title>
+	{{template "/common/html_head.html"}}
+	<link rel="stylesheet" type="text/css" href="/static/css/ztree/metroStyle/metroStyle.css">
+	<script src="/static/js/ztree/jquery-1.4.4.min.js"></script>
+	<script src="/static/js/ztree/jquery.ztree.all.min.js"></script>
+	<script src="/static/js/ztree/jquery.ztree.core.js"></script>
+	<script src="/static/js/ztree/jquery.ztree.excheck.js"></script>
+	<script type="text/javascript">
+	    var setting = {  
+	        view: {  
+	            selectedMulti: false        //禁止多点选中  
+	        }, 
+	        check: {
+	            enable: true,
+	            nocheck: true,
+	            chkStyle: "radio",
+	            radioType: "all"
+	        },
+	        data: {  
+	            simpleData: {  
+	                enable:true,  
+	                idKey: "Id",  
+	                pIdKey: "Fid"
+	            },
+	            key: {
+					name: "Name"
+				}
+	        },
+	        callback: {
+	            onCheck: function(e, treeId, treeNode) {
+            		var orgId = treeNode.Id;
+            		document.getElementById("orgId").value = orgId;
+	        	}
+	        }
+		};
+		var zNodes = {{.json}};
+		$(document).ready(function () {
+			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+		});
+
+
+	</script>
+</head>
+<body class="no-skin">
+	
+</body>
+</html>

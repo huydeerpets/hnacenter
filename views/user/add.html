@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>皓月交易系统</title>
+	{{template "/common/html_head.html"}}
+	<link rel="stylesheet" type="text/css" href="/static/css/ztree/metroStyle/metroStyle.css">
+	<!-- <script src="/static/js/ztree/jquery-1.4.4.min.js"></script> -->
+	<script src="/static/js/ztree/jquery.ztree.all.min.js"></script>
+	<script src="/static/js/ztree/jquery.ztree.core.js"></script>
+	<script src="/static/js/ztree/jquery.ztree.excheck.js"></script>
+</head>
+<body class="no-skin">
+	<div class="main-container" id="main-container">
+		<div class="main-content">
+			<div class="page-content">
+				<div class="page-content-area">
+					<div class="page-header">
+						<h1> 用户管理 <small> 新增用户 </small> </h1>
+					</div>
+				</div>
+				<div class="row" align="center">
+					<form class="form-horizontal" action="../user/add" method="POST" style="margin-top:30px;">
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="form-field-1">用户名称：</label>
+							<div class="col-sm-4">
+								<input type="hidden" name="isAction" value="0"/>
+								<input type="text" class="form-control" id="Username"  name="Username" 
+									placeholder="请输入用户名称" required autofocus/>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="form-field-1">用户代码：</label>
+							<div class="col-sm-4">
+								<input type="text" class="form-control" id="Usercode" name="Usercode" 
+									placeholder="请输入用户代码" required autofocus/>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="form-field-2">用户密码：</label>
+							<div class="col-sm-4">
+								<input type="password" class="form-control" id="Pwd" name="Pwd" 
+									placeholder="请输入用户密码" required autofocus/>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="form-field-2">确认密码：</label>
+							<div class="col-sm-4">
+								<input type="password" class="form-control" id="rPwd" 
+									placeholder="请确认用户密码" required autofocus/>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="form-field-2">角色名称：</label>
+							<div class="col-sm-4">
+							<select id="addRole" name="addRole">
+										{{range $k,$v := .roles}}
+										<option style="width:500px">{{$v.Name}}</option>
+										{{end}}
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="form-field-2">用户状态：</label>
+							<div class="col-sm-4">
+								<label class="col-sm-3">
+									<input type="radio" name="Status" value="0"><span class="lbl"> 启用 </span>
+								</label>
+								<label class="col-sm-3">
+									<input type="radio" name="Status" value="1"><span class="lbl"> 禁用 </span>
+								</label>
+								<label class="col-sm-3">
+									<input type="radio" name="Status" value="2"><span class="lbl"> 其他 </span>
+								</label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="form-field-2">备注：</label>
+							<div class="col-sm-4">
+								<textarea class="form-control" rows="3" style="resize:none;" name="Remark" placeholder="请输入备注"></textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<input class="btn btn-info" type="submit" value="新增" />
+							<input class="btn" type="reset" value="重置"/>
+						</div>
+					</form>
+					
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+		    function choose() {
+		        $('#myModal').modal('show');
+				var setting = {  
+			        view: {  
+			            selectedMulti: false        //禁止多点选中  
+			        }, 
+			        check: {
+			            enable: true,
+			            nocheck: true,
+			            chkStyle: "radio",
+			            radioType: "all"
+			        },
+			        data: {  
+			            simpleData: {  
+			                enable:true,  
+			                idKey: "Id",  
+			                pIdKey: "Fid"
+			            },
+			            key: {
+							name: "Name"
+						}
+			        },
+			        callback: {
+			            onCheck: function(e, treeId, treeNode) {
+		            		var orgId = treeNode.Id;
+		            		var orgName = treeNode.Name;
+		            		document.getElementById("oid").value = orgId;
+		            		document.getElementById("orgName").innerHTML = orgName;
+			        	}
+			        }
+				};
+				var zNodes = {{.json}};
+				$(document).ready(function () {
+					$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+				});
+		    }
+		    function save(){
+				$('#myModal').modal('hide');
+		    }
+
+		    function resetValue(){
+		    	document.getElementById("orgName").innerHTML = "角色名称";
+		    }
+		</script>
+
+		<div class="modal fade" id="myModal">  
+		    <div class="modal-dialog" >  
+		        <div class="modal-content">  
+		            <div class="modal-header">  
+		                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		                <h4 class="modal-title" id="NoPermissionModalLabel">角色选择</h4>  
+		            </div>  
+					<div class="modal-body" style="height: 500px;"> 
+						<ul id="treeDemo" class="ztree"></ul>
+					</div>  
+					<div class="modal-footer">
+						<button class="btn btn-info" type="button" onclick="save();">    保  存    </button>  
+						<button class="btn btn-info" type="button" data-dismiss="modal">    关  闭    </button>  
+					</div>  
+		        </div>  
+		    </div>  
+		</div>  
+	</body>
+</html>
+	
