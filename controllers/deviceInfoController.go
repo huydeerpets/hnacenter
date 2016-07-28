@@ -16,7 +16,6 @@ func (this *DeviceInfoController) GetDeviceLists() {
 		iStart, _ := this.GetInt64("iDisplayStart")
 		iLength, _ := this.GetInt64("iDisplayLength")
 		device, count := m.GetDeviceList(iStart, iLength, "Id")
-		beego.Debug(device, count)
 		for _, devices := range device {
 			switch devices["Status"] {
 			case int64(0):
@@ -42,11 +41,15 @@ func (this *DeviceInfoController) GetDeviceLists() {
 
 //删除设备信息
 func (this *DeviceInfoController) DelDevice() {
-	Id, _ := this.GetInt64("Id")
-	_, err := m.DelDeviceById(Id)
-	if err != nil {
-		beego.Error("delte device is err", err)
+	if this.IsAjax() {
+		Id, _ := this.GetInt64("Id")
+		_, err := m.DelDeviceById(Id)
+		if err == nil {
+			this.Result(true, "删除成功")
+		} else {
+			this.Result(false, "删除失败")
+		}
 	} else {
-		this.Alert("删除成功", "/hnacenter/device/list")
+		this.TplName = "/"
 	}
 }

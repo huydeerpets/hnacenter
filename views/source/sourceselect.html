@@ -1,0 +1,298 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>微业务后台管理</title>
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" type="text/css" href="/static/lib/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/dataTables.bootstrap.css">
+    <link rel="stylesheet" href="/static/lib/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" type="text/css" href="/static/stylesheets/theme.css">
+    <link rel="stylesheet" type="text/css" href="/static/stylesheets/premium.css">
+    <link rel="shortcut icon"  href="/static/img/favicon.ico">
+    <script src="/static/lib/jquery-1.11.1.min.js" type="text/javascript"></script>
+</head>
+<body class="theme-blue">
+<link rel="stylesheet" type="text/css" href="/static/font-awesome/css/font-awesome.css">
+<style>
+  .nav-header > .icon-chevron-down {
+    position: absolute;
+    right: 10px;
+    line-height: 30px;
+  }
+  .nav-header > .icon-chevron-down.active:before {
+    -moz-transform:rotate(180deg);
+    -webkit-transform:rotate(180deg);
+    -o-transform:rotate(180deg);
+    transform:rotate(180deg); 
+    filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+  }
+  a,a:link {
+    text-decoration: none;
+  }
+</style>
+<script type="text/javascript">
+  $(".nav-header").on("click",function(){
+    if($(this).find(".icon-chevron-down").hasClass("active")){
+      $(this).find(".icon-chevron-down").removeClass("active");
+    }else{
+      $(this).find(".icon-chevron-down").addClass("active");
+    }
+  });
+</script>
+<script type="text/javascript">
+    $(function() {
+        $(".knob").knob();
+    });
+</script>
+<script type="text/javascript">
+    $(function() {
+        var match = document.cookie.match(new RegExp('color=([^;]+)'));
+        if(match) var color = match[1];
+        if(color) {
+            $('body').removeClass(function (index, css) {
+                return (css.match (/\btheme-\S+/g) || []).join(' ')
+            })
+            $('body').addClass('theme-' + color);
+        }
+        $('[data-popover="true"]').popover({html: true});
+    });
+</script>
+<script type="text/javascript">
+    $(function() {
+        var uls = $('.sidebar-nav > ul > *').clone();
+        uls.addClass('visible-xs');
+        $('#main-menu').append(uls.clone());
+    });
+</script>
+<script type="text/javascript">
+    $("[rel=tooltip]").tooltip();
+    $(function() {
+        $('.demo-cancel-click').click(function(){return false;});
+    });
+</script>
+<div id="main-content" class="content" style="margin-left:0px;">
+        <div class="header" id="nav-header">
+          <ul class="breadcrumb">
+            <li><a href="/main" style="font-size:20px;">主页</a> </li>
+            <li class="active">公司列表</li>
+          </ul>
+        </div>
+  <div class="main-content">
+          
+<table class="table table-striped" id="example">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>公司代码</th>
+      <th>公司名</th>
+      <th>公司名</th>
+      <th>状态</th>
+      <th>是否推送</th>
+      <th>公司剩余</th>
+    </tr>
+  </thead>
+  <tbody id="data_body">
+    <tr>
+
+    </tr>
+  </tbody>
+</table>
+<div class="modal small fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+            <h3 id="myModalLabel">删除确认</h3>
+        </div>
+        <div class="modal-body">
+            <p class="error-text"><i class="fa fa-warning modal-icon"></i>您确定要删除<strong id="delData"></strong><br>这个操作是不可恢复的.</p>
+        </div>
+      </div>
+    </div>
+</div>
+</div>
+    </div>
+<script type="text/javascript" src="/static/datatable/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="/static/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/static/js/dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+var oTable;
+$(document).ready(function() {
+       oTable= initTable();
+       $("#myModal").on("hidden.bs.modal", function() {
+          $(this).removeData("bs.modal");
+        });
+       $("#delModal").on("hidden.bs.modal", function() {
+          $(this).removeData("bs.modal");
+        });
+});
+
+function initTable() {
+     var actionUrl='/hnacenter/source/select';
+    var table =$('#example').dataTable({
+        "bFilter": false, 
+        "bAutoWidth": false,  
+        "sPaginationType" : 'full_numbers',
+        "bPaginate": true, 
+        "bDestroy" : true,
+        "bProcessing" : true,
+        "sAjaxSource" : actionUrl,
+        "iDisplayLength":10,
+        "aLengthMenu": [[10, 15,20, 50, -1], [10, 15, 20,50, "All"]],
+        "bServerSide" : true,
+        "bSort":false,
+        "aoColumns" : [ 
+          {"mDataProp": "Id",},
+          {"mDataProp" : "Code",},
+          {"mDataProp" : "Name",},
+          {"mDataProp" : "Name",},
+          {"mDataProp" : "Status",
+            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+              if(sData == 1){
+                $(nTd).html("<span>正常</span>");
+              } else {
+                $(nTd).html("<span style='color:#ccc'>关闭</span>");
+              }
+            }
+          },
+          {"mDataProp" : "CusttomerPush"},
+          {"mDataProp" : "CompanyCustomer",
+            "fnCreatedCell" : function(nTd, sData, oData, iRow, iCol){
+              $(nTd).html("<span class='label label-info'>" + sData + "</span>")
+            }
+          }
+        ],
+        "columnDefs": [
+            {
+              "targets": [2],
+              "visible": false,
+              "searchable": false
+            }
+        ],
+        "oLanguage" : {
+            "sProcessing" : "正在加载中......",
+            "sLengthMenu" : "每页显示 _MENU_ 条记录",
+            "sZeroRecords" : "没有数据！",
+            "sEmptyTable" : "表中无数据存在！",
+            "sInfo" : "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+            "sInfoEmpty" : "显示0到0条记录",
+            "sInfoFiltered" : "",
+            "sSearch": "搜索",
+            "oPaginate" : {
+                "sFirst" : "首页",
+                "sPrevious" : "上一页",
+                "sNext" : "下一页",
+                "sLast" : "末页"
+            }
+        }
+    });
+return table;
+}
+
+
+
+function _deleteFun(id,type) {
+  if (type == 1) {
+    $("#rel-del").attr("rel-del-id",id);
+    $('#delModal').modal('show').on('shown',function(){
+       
+    })
+  }else{
+    var aid = $("#rel-del").attr("rel-del-id")
+    $.ajax({
+        url: "/hnnacenter/company/delete",
+        data: {"Id": aid},
+        type: "post",
+        success: function (r) {
+            if (r.status) {
+                oTable.fnReloadAjax(oTable.fnSettings());
+            } else {
+                alert(r.info);
+            }
+        }, error: function (error) {
+            console.log(error);
+        }
+    });
+  }
+}
+
+
+ 
+$.fn.dataTableExt.oApi.fnReloadAjax = function (oSettings) {
+    this.fnClearTable(this);
+    this.oApi._fnProcessingDisplay(oSettings, true);
+    var that = this;
+ 
+    $.getJSON(oSettings.sAjaxSource, null, function (json) {
+        for (var i = 0; i < json.aaData.length; i++) {
+            that.oApi._fnAddData(oSettings, json.aaData[i]);
+        }
+        oSettings.aiDisplay = oSettings.aiDisplayMaster.slice();
+        that.fnDraw(that);
+        that.oApi._fnProcessingDisplay(oSettings, false);
+    });
+}
+
+
+function formatDatetime(str){ 
+    var now = new Date(parseInt(str));    
+    var year = now.getYear()+1900;     
+    var month = addZero(now.getMonth()+1);     
+    var date = addZero(now.getDate());     
+    var hour = addZero(now.getHours());     
+    var minute = addZero(now.getMinutes());     
+    var second = addZero(now.getSeconds());     
+    return year+"-"+month+"-"+date;     
+}
+
+
+function addZero(t){
+    if(t<10){
+        return "0" + t;
+    }else{
+        return t;
+    }
+}
+</script>
+<script>
+  var actionUrl = "/hnnacenter/customer/companycustomer";
+  $('.nav-list').find("li").find("a[href='"+actionUrl+"']").parent().parent().parent().prev().find(".icon-chevron-down").addClass("active");
+  $('.nav-list').find("li").find("a[href='"+actionUrl+"']").parent().parent().addClass("in");
+  $('.nav-list').find("li").find("a[href='"+actionUrl+"']").parent().addClass("active");
+</script>
+        <style>
+        body > .content {
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        #back-button {
+            float: right;
+            margin-right: 20px;
+        }
+    </style>
+    <script src="/static/js/iuan_common.js"></script>
+    <script src="/static/lib/jQuery-Knob/js/jquery.knob.js" type="text/javascript"></script>
+    <script src="/static/js/echarts.common.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/lib/bootstrap/js/bootstrap.js"></script>
+     
+    <script>
+        var viewHeight = $(window).height();
+        var headerHeight = $('#pageHeader').height();
+        
+
+        var paddingHeight = 20;
+        $("body > .content").height(viewHeight-headerHeight-paddingHeight);
+    </script>
+    <script type="text/javascript">
+        
+        $('#back-button').on("click",function(){
+            window.location.href=document.referrer; 
+        });
+    </script>
+</body>
+</html>

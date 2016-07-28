@@ -11,10 +11,16 @@ import (
 
 //验证用户登录
 var FilterUser = func(ctx *context.Context) {
-	_, ok := ctx.Input.Session("user").(m.User)
-	if !ok && ctx.Request.RequestURI != "/login" {
+	user := ctx.Input.Session("user")
+	if user == nil {
 		ctx.Redirect(302, "/login")
+	} else {
+		_, ok := user.(m.User)
+		if !ok && ctx.Request.RequestURI != "/login" {
+			ctx.Redirect(302, "/login")
+		}
 	}
+
 }
 
 //界面权限认证(非管理员用户，取得可以访问的所有url，然后取得界面url，然后进行比较，有则可以访问，没有就不可以访问)

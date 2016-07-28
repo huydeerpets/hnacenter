@@ -19,7 +19,6 @@ func (this *CompanyController) GetCompanyList() {
 		iStart, _ := this.GetInt64("iDisplayStart")
 		iLength, _ := this.GetInt64("iDisplayLength")
 		companys, count := m.GetConpanyList(iStart, iLength, "Id")
-
 		for _, company := range companys {
 			switch company["Status"] {
 			case int64(0):
@@ -181,6 +180,7 @@ func (this *CompanyController) EditCompany() {
 		Apkdescribe := this.GetString("ApkDescribe")    //apk描述
 		Apkcleardata, _ := this.GetInt32("ApkClerdata") //apk清空数据
 		//1开启  0关闭
+
 		FunCustomer, _ := this.GetInt32("FuncCustomer")            //下载资源开关
 		FuncImage, _ := this.GetInt32("FuncImage")                 //下载图片开关
 		FuncUploadWechat, _ := this.GetInt32("FuncUploadWechat")   //上传微信记录开关
@@ -291,11 +291,11 @@ func (this *CompanyController) SelectCompany() {
 		} else if filters == "状态" {
 			if conditions == "正常" {
 				status = 1
-				company := m.GetCompanyByStatus(status)
+				company, _ := m.GetCompanyByStatus(status)
 				this.Data["json"] = &company
 			} else if conditions == "关闭" {
 				status = 0
-				company := m.GetCompanyByStatus(status)
+				company, _ := m.GetCompanyByStatus(status)
 				this.Data["json"] = &company
 			}
 		}
@@ -320,4 +320,26 @@ func (this *CompanyController) SelectCompany() {
 		}
 	}
 	this.TplName = "company/index.html"
+}
+
+//资源管理中间的公司属性修改
+func (this *CompanyController) ChangeCompanyAttr() {
+	Id, _ := this.GetInt64("Id")
+	isAction := this.GetString("isAction")
+	companys := m.GetCompanyInfoById(Id)
+	if isAction == "0" {
+		CompanyName := this.GetString("CompanyName")
+		CusttomerPush, _ := this.GetInt64("CusttomerPush")
+		CustomerUser, _ := this.GetInt64("CustomerUser")
+		CustomerNum, _ := this.GetInt64("CustomerNum")
+		_, err := m.UpdateCompanysById(Id, CompanyName, CusttomerPush, CustomerUser, CustomerNum)
+		if err != nil {
+			this.Alert("更新失败", "/hnacenter/source/companylist")
+		} else {
+			this.Alert("修改成功", "/hnacenter/source/companylist/")
+		}
+	} else {
+		this.Data["companys"] = companys
+		this.TplName = "source/companyattr.html"
+	}
 }

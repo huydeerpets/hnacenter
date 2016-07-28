@@ -34,6 +34,7 @@ func (this *RoleController) GetRoleList() {
 
 }
 
+//更新角色信息
 func (this *RoleController) UpdateRoles() {
 	isAction := this.GetString("isAction")
 	Id, _ := this.GetInt64("Id")
@@ -58,6 +59,7 @@ func (this *RoleController) UpdateRoles() {
 
 }
 
+//增加角色
 func (this *RoleController) AddRole() {
 	isAction := this.GetString("isAction")
 	if isAction == "0" {
@@ -84,6 +86,7 @@ func (this *RoleController) AddRole() {
 
 }
 
+//删除角色
 func (this *RoleController) DeleteRole() {
 	Id, _ := this.GetInt64("Id")
 	_, err := m.DelRole(Id)
@@ -109,6 +112,7 @@ func (this *RoleController) DisPermission() {
 	this.TplName = "role/permission.html"
 }
 
+//设置权限
 func (this *RoleController) AddPermission() {
 	Ids := this.GetString("Ids")
 	Id, _ := this.GetInt64("Id")

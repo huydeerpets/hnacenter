@@ -55,7 +55,7 @@ type Company struct {
 	FuncShake      int32             `orm:"default(1)"`      //开启摇一摇 (1 :默认开启 0:关闭)
 	CusttomerPush  int64             `orm:"default(0)"`      //开启推送资源公司(1:推送 0：默认不推送)
 	CustomerUser   int64             `orm:"default(888888)"` //分发资源的帐号
-	CustomerNum    int64             //分发资源量
+	CustomerNum    int64             //分发资源量,资源限定
 	MobileProvince []*MobileProvince `orm:"rel(m2m)"` //省份
 }
 
@@ -407,13 +407,33 @@ func GetCompanyByProvinceAndStatus(provinceName string, statu int) (company []Co
 }
 
 //根据公司状态查询公司信息
-func GetCompanyByStatus(status int) (company []orm.Params) {
+func GetCompanyByStatus(status int) (company []orm.Params, num int64) {
 	o := orm.NewOrm()
 	var companys []orm.Params
-	_, err := o.QueryTable("company").Filter("Status", status).Values(&companys)
+	nums, err := o.QueryTable("company").Filter("Status", status).Values(&companys)
 	if err != nil {
 		beego.Error("can't find the company", err)
 	}
-	return companys
+	return companys, nums
 
+}
+
+//查询所有公司的数量
+func GetAllCompanyNum() (int64, error) {
+	o := orm.NewOrm()
+	count, err := o.QueryTable("company").Count()
+	return count, err
+}
+
+//根据id值更新公司属性
+func UpdateCompanysById(Id int64, CompanyName string, CusttomerPush int64, CustomerUser int64, CustomerNum int64) (int64, error) {
+	beego.Debug(Id, CompanyName, CusttomerPush, CustomerUser, CustomerNum)
+	o := orm.NewOrm()
+	num, err := o.QueryTable("company").Filter("Id", Id).Update(orm.Params{
+		"Name":          CompanyName,
+		"CusttomerPush": CusttomerPush,
+		"CustomerUser":  CustomerUser,
+		"CustomerNum":   CustomerNum,
+	})
+	return num, err
 }

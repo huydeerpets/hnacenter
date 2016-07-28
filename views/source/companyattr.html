@@ -1,0 +1,253 @@
+<!-- 快速笔记 -->
+<style>
+.record {
+    height: 400px;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.main-content {
+    margin: 0 auto;
+    float: none;
+}
+
+.record > .header {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background: #3F3F3F;
+    color: #fff;
+    line-height: 30px;
+}
+
+.record > .header > span {
+    margin-left: 10px;
+}
+
+.submit-area {
+    width: 100%;
+}
+
+#note {
+    margin-top: 10px;
+    resize: none;
+}
+
+#submit {
+    margin-top: 5px;
+}
+
+ul,
+li {
+    margin: 0;
+    padding: 0;
+}
+
+#record-list {
+    padding-top: 20px;
+    padding-bottom: 40px;
+    height: 360px;
+    overflow-y: auto;
+}
+
+#record-list > li {
+    padding-bottom: 5px;
+    line-height: 25px;
+}
+
+#record-list > li > p {
+    margin: 0 0 0 10px;
+    padding: 0;
+}
+
+#record-list > li > p:first-child {
+    color: #ccc;
+}
+
+#record-list > li > p > span:first-child {
+    color: #428bca;
+}
+
+#people {
+    position: absolute;
+    left: -40px;
+    bottom: 5px;
+    border-radius: 50%;
+}
+</style>
+
+<div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title">公司属性修改</h4>
+          </div>
+          <form action="/hnacenter/company/companychange" method="post">
+          <div class="modal-body">
+              <div class="form-group">
+                <div class="form-inline">
+                  <label>公司名称：</label>
+                  <input type="hidden" name="Id" value="{{.companys.Id}}">
+                  <input type="hidden" name="isAction" value="0"/>
+                  <input type="text" name="CompanyName" class="form-control input-sm" value="{{.companys.Name}}" data-toggle="tooltip" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="form-inline">
+                  <label>是否推送：</label>
+                  <div class="checkbox">
+                    <label>
+                      <input name="CusttomerPush" value="1" {{if eq 1 .companys.CusttomerPush}}checked='true'{{end}} type="radio"> 开　
+                    </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input name="CusttomerPush" value="0" {{if eq 0 .companys.CusttomerPush}}checked='true'{{end}} type="radio"> 关
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div id="customeruser" class="form-inline">
+                  <label>资源管理帐号：</label>
+                  <input name="CustomerUser" type="text" value="{{.companys.CustomerUser}}" class="form-control input-sm">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div id="customeruser" class="form-inline">
+                  <label>补全资源量：</label>
+                  <input name="CustomerNum" type="text" value="{{.companys.CustomerNum}}" class="form-control input-sm">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="form-inline">
+                    <label>排除省份：</label>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece1" value="1"> 北京
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece2" value="2"> 天津
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece3" value="3"> 河北
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece4" value="4"> 山西
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece5" value="5"> 内蒙古
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece6" value="6"> 辽宁
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece7" value="7"> 吉林
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece8" value="8"> 黑龙江
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece9" value="9"> 上海
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece10" value="10"> 江苏
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece11" value="11"> 浙江
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece12" value="12"> 安徽
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece13" value="13"> 福建
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece14" value="14"> 江西
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece15" value="15"> 山东
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece16" value="16"> 河南
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece17" value="17"> 湖北
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece18" value="18"> 湖南
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece19" value="19"> 广东
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece20" value="20"> 广西
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece21" value="21"> 海南
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece22" value="22"> 重庆
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece23" value="23"> 四川
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece24" value="24"> 贵州
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece25" value="25"> 云南
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece26" value="26"> 西藏
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece27" value="27"> 陕西
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece28" value="28"> 甘肃
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece29" value="29"> 青海
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece30" value="30"> 宁夏
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece31" value="31"> 新疆
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece32" value="32"> 香港
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece33" value="33"> 澳门
+                     </lable>
+                     <lable class="checkbox-inline">
+                        <input type="checkbox" name="provive" id="inlineprovece34" value="34"> 台湾
+                     </lable> 
+
+                </div>
+              </div>
+              
+          </div>
+          <div class="modal-footer">
+              <button type="reset" class="btn btn-default" data-dismiss="modal">关闭</button>
+              <input type="submit" class="btn btn-primary" id="changeUnameBtn">
+          </div>
+          </form>
+<script>
+// 初始化城市
+$(function(){
+    var attrjson = JSON.parse({{.jsonStr}});
+    $.each(attrjson, function(index, val) {
+        $("#inlineprovece"+val).attr('checked', true);
+    });
+});
+</script>
+</body>
+
+</html>

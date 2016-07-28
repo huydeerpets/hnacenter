@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>皓月交易系统</title>
 	{{template "/common/html_head.html"}}
-	<script src="http://libs.baidu.com/jquery/1.9.1/juery.js"></script>
 </head>
 <body class="no-skin">
 	<div class="main-container" id="main-container">
@@ -28,7 +26,7 @@
 							<option>公司名</option>
 							<option>状态</option>
 						</select>
-						<input type="button" value="筛选" >
+						<input type="submit" value="筛选" >
 						</form>
 					</div>
 					<div class="row">
@@ -64,7 +62,7 @@
 	function initTable() {
 	    var actionUrl='../company/list';
 	    var table =$('#sample-table-1').dataTable({
-	    	"bFilter": false, 
+	    	"bFilter": true, 
 	        "bAutoWidth": false,  
 	        "sPaginationType" : 'full_numbers',
 	        "bPaginate": true, //翻页功能
@@ -75,7 +73,6 @@
 	        "sAjaxSource" : actionUrl,
 	        "iDisplayLength":10,
 	        "aLengthMenu": [[10, 15,20, 50, -1], [10, 15, 20,50, "All"]],
-	        "bServerSide" : true,
 	        "bSort":false,
 	        "bInfo":true,
 	        "aoColumns" : [
@@ -94,7 +91,7 @@
 		        	{
 		        		"mDataProp": "Id",
 		        		"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-		        			$(nTd).html("<a style='cursor:pointer;' href='http://{{.ActionUrl}}/hnacenter/company/edit?Id="+ oData.Id + "'>编辑</a>&nbsp;&nbsp;").append("<a style='cursor:pointer;' onclick='changeCompany(" + oData.Id + ")'>更改状态</a>&nbsp;&nbsp;").append("<a style='cursor:pointer;' onclick='delCompany(" + oData.Id + ")'>删除</a>");
+		        			$(nTd).html("<a style='cursor:pointer;' href='http://{{.ActionUrl}}/hnacenter/company/edit?Id="+ oData.Id + "'><i class='fa fa-pencil'></i></a>&nbsp;&nbsp;").append("<a style='cursor:pointer;' onclick='delCompany(" + oData.Id + ")'><i class='fa fa-trash-o'></i></a>&nbsp;&nbsp;").append("<a style='cursor:pointer;' onclick='changeCompany(" + oData.Id + ")'>更改状态</a>&nbsp;&nbsp;");
 				        }
 				    }
 				    ],
@@ -105,7 +102,7 @@
 				"sEmptyTable" : "表中无数据存在！",
 				"sInfo" : "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
 				"sInfoEmpty" : "显示0到0条记录",
-				"sInfoFiltered" : "数据表中共为 _MAX_ 条记录",
+				 "sInfoFiltered" : "",
 				"sSearch":"搜索:",
 				"oPaginate" : {
 					"sFirst" : "首页",

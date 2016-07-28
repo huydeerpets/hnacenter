@@ -1,0 +1,768 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" type="text/css" href="/static/lib/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/dataTables.bootstrap.css">
+    <link rel="stylesheet" href="/static/lib/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" type="text/css" href="/static/stylesheets/theme.css">
+    <link rel="stylesheet" type="text/css" href="/static/stylesheets/premium.css">
+    <link rel="shortcut icon"  href="/static/img/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="/static/font-awesome/css/font-awesome.css">
+    <script src="/static/lib/jquery-1.11.1.min.js" type="text/javascript"></script>
+</head>
+<style>
+	.nav-header > .icon-chevron-down {
+		position: absolute;
+		right: 10px;
+		line-height: 30px;
+	}
+	.nav-header > .icon-chevron-down.active:before {
+		-moz-transform:rotate(180deg);
+		-webkit-transform:rotate(180deg);
+		-o-transform:rotate(180deg);
+		transform:rotate(180deg); 
+		filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+	}
+	a,a:link {
+		text-decoration: none;
+	}
+</style>
+
+<script type="text/javascript">
+	$(".nav-header").on("click",function(){
+		if($(this).find(".icon-chevron-down").hasClass("active")){
+			$(this).find(".icon-chevron-down").removeClass("active");
+		}else{
+			$(this).find(".icon-chevron-down").addClass("active");
+		}
+	});
+</script>
+<script type="text/javascript">
+    $(function() {
+        $(".knob").knob();
+    });
+</script>
+<script type="text/javascript">
+    $(function() {
+        var match = document.cookie.match(new RegExp('color=([^;]+)'));
+        if(match) var color = match[1];
+        if(color) {
+            $('body').removeClass(function (index, css) {
+                return (css.match (/\btheme-\S+/g) || []).join(' ')
+            })
+            $('body').addClass('theme-' + color);
+        }
+        $('[data-popover="true"]').popover({html: true});
+    });
+</script>
+<script type="text/javascript">
+    $(function() {
+        var uls = $('.sidebar-nav > ul > *').clone();
+        uls.addClass('visible-xs');
+        $('#main-menu').append(uls.clone());
+    });
+</script>
+<script type="text/javascript">
+    $("[rel=tooltip]").tooltip();
+    $(function() {
+        $('.demo-cancel-click').click(function(){return false;});
+    });
+</script>
+<link rel="stylesheet" type="text/css" href="/static/lib/jquery-ui/jquery-ui.css">
+<style>
+#userList {
+    margin-top: 10px;
+}
+#userList > span {
+    margin: 5px;
+    display: inline-block;
+}
+
+#userList > span > i {
+    margin-left: 5px;
+    cursor: pointer;
+    color: #fff;
+}
+
+#userList > span > i:hover {
+    color: #666;
+}
+
+.form-inline {
+    margin-bottom: 15px;
+}
+
+select {
+    line-height: 25px !important;
+    height: 25px !important;
+    padding: 0 5px !important;
+}
+
+label > span.text-danger {
+    vertical-align: middle;
+}
+
+#allotCnt {
+    width: 100px;
+    line-height: 25px;
+    height: 25px;
+    padding: 0 5px;
+}
+
+#query-name {
+    line-height: 25px;
+    height: 25px;
+    padding: 0 5px;
+    font-size: 12px;
+}
+
+#rspsuccess {
+    display: none;
+}
+
+.ui_textline_num {
+    background-color: #cacaca;
+    color: #fff;
+    font-weight: bold;
+    overflow-y: scroll;
+    text-align: center;
+    width: 42px;
+    line-height: 21px;
+    border: 1px solid #a8adb6;
+}
+
+.ui_textarea {
+    float: left;
+    display: inline;
+    background: #fff;
+    text-align: left;
+    border: 1px solid #a8adb6;
+    position: absolute;
+    left: 24px;
+    top: 0;
+    line-height: 21px;
+    resize: none;
+}
+#personChoose {
+    display: none;
+}
+#azone1,#cls1 {
+    width: 100px;
+}
+</style>
+
+<div class="content" style="margin-left:0px;">
+    <div class="header" style="margin: 0px 0em 0em 0em;">
+        <ul class="breadcrumb">
+            <li>
+                <a href="/main" style="font-size:20px">主页</a>
+            </li>
+            <li>
+                <a href="javascript:;">资源管理</a>
+            </li>
+            <li class="active">资源分配</li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <div class="row">
+            <div class="col-md-7">
+                <div id="myTabContent" class="tab-content">
+                    <div class="alert alert-warning">当选择资源区域之后，<span style="color">排除区域</span>配置无效</div>
+                    <input type="hidden" name="isAction" value="0" />
+                    <div class="form-inline">
+                        <label>
+                            <span class="text-danger">&nbsp</span> 资源区域：
+                        </label>
+                        <div class="form-group">
+                            <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+                            
+                            <select class="form-control input-sm" aria-controls="example" name="azone" id="azone1" onChange="this.value=this.options[this.selectedIndex].value;altcls(1);inps.value=optn.options[0].value;">
+                                <option value="省份" disabled="disabled">省份</option>
+                            </select>
+                            
+                            <select style="display:none" class="form-control input-sm" name="cls" id="cls1" onChange="if(this.options[0].text!='选择城区')inps.value=this.options[this.selectedIndex].value;">
+                                <option value=10000>选择城区</option>
+                            </select>
+                            <label class="text-danger" style="padding-left:20px" id="showRemainNum"></label>
+                        </div>
+                        <input class="hide" type="text" id="inps1" name="inps" size="5" value="" onkeyup="if(this.value.length>1)inti(1);findarea();" />
+                    </div>
+
+                    <div class="form-inline">
+                        <label>
+                            <span class="text-danger">*</span> 补全方式：
+                        </label>
+                        <div class="checkbox">
+                            
+                            <label>
+                                <input type="radio" name="allocation" class="radio" value="2" checked=""/> 补全分配
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-inline">
+                        <label>
+                            <span class="text-danger">*</span> 资源类型：
+                        </label>
+                        <select id="type" class="form-control input-sm" style="width:150px;">
+                        <option value="-1">选择类型</option>
+                        
+                            <option value="1">默认分类</option>
+                        
+                            <option value="2">特色油条</option>
+                        
+                        </select>
+                        <label class="text-danger" style="padding-left:20px" id="showCustomerGroupRemain"></label>
+                    </div>
+                    <div class="form-inline">
+                        <label>
+                            <span class="text-danger">*</span> 分配人员：
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" name="group_select" id="group2_select" value="1" checked="true"> 资源组
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" name="group_select" id="group3_select" value="2"> 个人
+                        </label>
+                        <div style="margin-top:15px;">
+                            <div id="CutomerGroupAll">
+                                
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" value="3" class="CutomerGroupAll" style="bottom: 2px;"> A类
+                                </label>
+                                
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" value="4" class="CutomerGroupAll" style="bottom: 2px;"> B类
+                                </label>
+                                
+                            </div>
+                            <div id="personChoose">
+                                <input type="text" placeholder="请输入工号" class="form-control inout-sm" id="query-name"/>
+                                <span style="color:#999;margin-left:15px;">请输入工号进行模糊匹配，点选下拉列表中的项目进行选择</span>
+                            </div>
+                            <div id="userList"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="showInfo" class="alert alert-info"></div>
+                <span id="rspsuccess">
+                    <img src='/static/images/loding-line.gif'></span>
+                <div>
+                    <button class="btn btn-primary" id="sublimtbuttom">
+                        <i class="fa fa-save"></i> 分配
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/static/js/provicend.js"></script>
+<script type="text/javascript" src="/static/lib/jquery-ui/jquery-ui.js"></script>
+<script type="text/javascript">
+$('#azone1').on('change', function() {
+    var zonedata = $('#azone1').val();
+    var customertype = $("#type option:selected").val();
+    var provicenName = $("#azone1 option:selected").html();
+
+    $.ajax({
+        async: true, 
+        type: "POST",
+        data: {
+            AreaName: zonedata,
+            customertype: customertype
+        },
+        url: "/hnnacenter/customer/customernum?type=3",
+        dataType: 'json',
+        success: function(r) {
+            if (r.status) {
+                $('#showRemainNum').show()
+                $('#showRemainNum').html(provicenName + "省 : " + r.info);
+            } else {
+                alert(r.info);
+            };
+        }
+    });
+});
+
+$('#type').on('change', function() {
+    var zonedata = $('#azone1').val()
+    var uCustomerGroup = $(this).val();
+    var provicenName = $("#azone1 option:selected").html();
+    if (uCustomerGroup == -1) {
+        uCustomerhtml = "所有分类";
+    }else{
+        uCustomerhtml = $("#type option:selected").html();
+    };
+    
+
+    $.ajax({
+        url: '/hnnacenter/customer/customernum?type=6',
+        type: 'POST',
+        data: {uCustomerGroup:uCustomerGroup,zonedata:zonedata},
+        success:function(r){
+            if (r.status) {
+                $('#showCustomerGroupRemain').html(uCustomerhtml + ": " + r.info);
+                $('#showRemainNum').html(provicenName + "省 : " + r.info);
+            }else{
+                alert(r.info);
+            }
+        }
+    })
+});
+
+init(); 
+function init() {
+    
+    $("#showInfo").hide();
+    $.ajax({
+        async: true, 
+        type: "POST",
+        data: {
+            AreaName: 0
+        },
+        url: "/hnnacenter/customer/customernum?type=3",
+        dataType: 'json',
+        success: function(r) {
+            if (r.status) {
+                $('#showRemainNum').show()
+                $('#showRemainNum').html("全部省 : " + r.info);
+                $('#showCustomerGroupRemain').html("所有分类: " + r.info);
+            } else {
+                alert(r.info);
+            };
+        }
+    });
+}
+
+$('#cls1').on('change', function() {
+    var inosdata = $('#inps1').val()
+    var provicenName = $("#azone1 option:selected").html()
+    var provicenCity = $("#cls1 option:selected").html()
+
+    if(inosdata == 10000){
+        return;
+    }
+
+    $.ajax({
+        async: true,
+        type: "POST",
+        data: {
+            AreaCityName: inosdata
+        },
+        url: "/hnnacenter/customer/customernum?type=4",
+        dataType: 'json',
+        success: function(r) {
+            if (r.status) {
+                $('#showRemainNum').show()
+                $('#showRemainNum').html(provicenName + provicenCity + ":" + r.info);
+            } else {
+                alert(r.info);
+            };
+        }
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$('#sublimtbuttom').on('click', function() {
+    $("#showInfo").hide();
+    var zonedata = $('#azone1').val(); 
+    var inosdata = $('#inps1').val(); 
+    var allocation = $('input[name="allocation"]:checked').val(); 
+    
+    var cusType = $("#type").val();
+    
+    var usertextarea = "";
+    $("#userList > span").each(function() {
+        var value = $(this).attr("data-value");
+        usertextarea = usertextarea + value + ",";
+    });
+    if (usertextarea.length > 0) {
+        usertextarea = usertextarea.substring(0, usertextarea.length - 1);
+    }
+    if (zonedata < 0 || inosdata < 0 || allocation < 0 || usertextarea == "") {
+        alert("请填写标有*的区域");
+    } else if(cusType < 0 ){
+        alert("请选择资源类型")
+        return false;
+    }else{
+        $.ajax({
+            async: true,
+            type: "POST",
+            data: {
+                "zonedata": zonedata,
+                "inosdata": inosdata,
+                "allocation": allocation,
+                "usertextarea": usertextarea,
+                "cusType":cusType,
+            },
+            url: "/hnnacenter/customer/allot",
+            dataType: 'json',
+            beforeSend: function() {
+                $("#rspsuccess").show();
+            },
+            success: function(r) {
+                $("#rspsuccess").hide();
+                $("#showInfo").show();
+                $('#showInfo').html(r.info);
+            }
+        });
+    }
+});
+
+$(document).on("click", "#userList > span > i", function() {
+    $(this).parent().remove();
+});
+
+$("#query-name").autocomplete({
+    source: ["100","848008","888888","200"],
+    select: function(e, v) {
+        var uname = v.item.value;
+        var isExist = false;
+        $("#userList > span").each(function() {
+            if ($(this).attr("data-value") == uname) {
+                isExist = true;
+            }
+        });
+        if (isExist) {
+            return;
+        }
+        var html = '<span class="label label-info" data-value="' + uname + '">' + uname + '<i class="fa fa-fw fa-times"></i></span>';
+        $("#userList").append(html);
+    },
+});
+
+$("input[name=group_select]").on("change",function(){
+    var val = $(this).val();
+    if(val == 1){
+        $("#CutomerGroupAll").show();
+        $("#userList > span").remove();
+        $(".CutomerGroupAll").prop("checked",false);
+        $("#personChoose").hide();
+    }else if(val == 2){
+        $("#CutomerGroupAll").hide();
+        $("#userList > span").remove();
+        $("#personChoose").show();
+        $("#query-name").val("");
+    }
+});
+
+$(".CutomerGroupAll").on('click', function() {
+    if ($(this).prop('checked')) {
+        var customergroup = $(this).val()
+        $.ajax({
+            async: true,
+            type: "POST",
+            data: {
+                customergroup: customergroup
+            },
+            url: "/hnnacenter/customer/customernum?type=5",
+            dataType: 'json',
+            success: function(r) {
+                if (r.status) {
+                    var arr = r.customerid.split(",");
+                    var namearr = r.customername.split(",")
+                    for (var i = 0; i < arr.length; i++) {
+                        var isExist = false;
+                        $("#userList > span").each(function() {
+                            if ($(this).attr("data-value") == arr[i]) {
+                                isExist = true;
+                            }
+                        });
+
+                        if(!isExist){
+                            var html = '<span class="label label-info" data-value="' + arr[i] + '">' + arr[i] + '('+namearr[i]+')'+'<i class="fa fa-fw fa-times"></i></span>';
+                            $("#userList").append(html);
+                        }
+                    }
+                }
+            }
+        });
+    }else{
+        var customergroup = $(this).val()
+        $.ajax({
+            async: true,
+            type: "POST",
+            data: {
+                customergroup: customergroup
+            },
+            url: "/hnnacenter/customer/customernum?type=5",
+            dataType: 'json',
+            success: function(r) {
+                if (r.status) {
+                    var arr = r.customerid;
+                    $("#userList > span").each(function() {
+                        var datavalue = $(this).attr('data-value');
+                        sear=new RegExp(datavalue);
+                        if (sear.test(arr)) {
+                            $(this).remove();
+                        };
+                    });
+                }
+            }
+        });
+    };
+});
+</script>
+<script>
+  var actionUrl = "/hnnacenter/customer/allot";
+  $('.nav-list').find("li").find("a[href='"+actionUrl+"']").parent().parent().parent().prev().find(".icon-chevron-down").addClass("active");
+  $('.nav-list').find("li").find("a[href='"+actionUrl+"']").parent().parent().addClass("in");
+  $('.nav-list').find("li").find("a[href='"+actionUrl+"']").parent().addClass("active");
+</script>
+    <style>
+        body > .content {
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        #back-button {
+            float: right;
+            margin-right: 20px;
+        }
+    </style>
+    <script src="/static/js/iuan_common.js"></script>
+    <script src="/static/lib/jQuery-Knob/js/jquery.knob.js" type="text/javascript"></script>
+    <script src="/static/js/echarts.common.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/lib/bootstrap/js/bootstrap.js"></script>
+     
+    <script>
+        var viewHeight = $(window).height();
+        var headerHeight = $('#pageHeader').height();
+        
+
+        var paddingHeight = 20;
+        $("body > .content").height(viewHeight-headerHeight-paddingHeight);
+    </script>
+    <script type="text/javascript">
+        
+        $('#back-button').on("click",function(){
+            window.location.href=document.referrer; 
+        });
+
+        
+// $("#customerCheckUser").click(function() {
+//     var UserNum = $("#usertransfer").val();
+//     $("#EnterSure").val(1)
+//     $("#customerShowUserInfo").removeClass('hide')
+//     $.ajax({
+//         async: true,
+//         type: "POST",
+//         data: {
+//             UserNum: UserNum
+//         },
+//         url: "/hnnacenter/customer/customernum?type=8",
+//         dataType: 'json',
+//         success: function(r) {
+//             if (r.status) {
+//                 $('#customer-userinfo').html(r.info);
+//             } else {
+//                 alert(r.info);
+//             };
+//         }
+//     });
+// });
+
+
+
+
+// $.fn.dataTableExt.oApi.fnReloadAjax = function(oSettings) {
+//     this.fnClearTable(this);
+//     this.oApi._fnProcessingDisplay(oSettings, true);
+//     var that = this;
+
+//     $.getJSON(oSettings.sAjaxSource, null, function(json) {
+//         for (var i = 0; i < json.aaData.length; i++) {
+//             that.oApi._fnAddData(oSettings, json.aaData[i]);
+//         }
+//         oSettings.aiDisplay = oSettings.aiDisplayMaster.slice();
+//         that.fnDraw(that);
+//         that.oApi._fnProcessingDisplay(oSettings, false);
+//     });
+// }
+
+
+
+// $("#changeUnameBtn").on("click",function(){
+//   var oldUname = $("#oldUname").val();
+//   var newUname = $("#newUname").val();
+//   var newGroup = $("#newGroup").val();
+//   var newName = $("#newName").val();
+//   if(!isNumber(newUname)){
+//     alert("工号格式错误，请重新输入!");
+//     return;
+//   }
+//   if(oldUname == newUname){
+//     alert("工号并未改动，请重新输入工号！");
+//     return;
+//   }
+//   if(newGroup == 0){
+//     alert("请选择组别！");
+//     return;
+//   }
+//   if(newName == ""){
+//     alert("请输入姓名！");
+//     return;
+//   }
+//   $.post("/hnnacenter/user/changeUname",{
+//     oldUname:oldUname,
+//     newUname:newUname,
+//     newGroup:newGroup,
+//     newName:newName,
+//   },function(data){
+//     if(data.status){
+//       alert("修改成功！");
+//       $('#changeModals').modal('hide');
+//       oTable.fnReloadAjax(oTable.fnSettings());
+//     }else{
+//       alert("修改失败,请检查新的工号是否存在！");
+//     }
+//   },'json');
+// });
+
+// function isNumber(value){
+//   return /^[1-9]+.?[0-9]*$/.test(value); 
+// }
+
+
+
+// function createModal() {
+//     var html = "<div id='mycover'></div>";
+//     $("body").append(html);
+//     $("#mycover").one("click", function() {
+//         $("#slideArea").removeClass("active");
+//         $(this).remove();
+//     });
+// }
+
+
+// function removeModal() {
+//     $("#mycover").remove();
+// }
+
+// $("#closePanel").on("click", function() {
+//     $("#slideArea").removeClass("active");
+//     removeModal();
+// });
+
+// $("#addType").on("click",function(){
+//     $("#myModal").modal("show");
+// });
+
+// $("#addBtn").on("click",function(){
+//     var name = $("#addText").val();
+//     if(name == ""){
+//         alert("请输入类型名！");
+//         return;
+//     }
+//     if(getStrlength(name) > 8){
+//         alert("资源分类名长度不能多于4个汉字！");
+//         return;
+//     }
+//     $.post("/hnacenter/source/custype?method=1",{
+//         name:name
+//     },function(data){
+//         if(data.status){
+//             alert("添加成功！");
+//             getTypes();
+//         }else{
+//             alert(data.info);
+//         }
+//     },'json');
+// });
+
+
+// function getTypes(){
+//     $.post("/hnacenter/source/custype?method=3",{
+//     },function(data){
+//         if(data != null){
+//             $("#typeTable").empty();
+//             $("#type").empty();
+//             for(var i=0;i<data.length;i++){
+//                 var html = "<option value='"+data[i].Id+"'>"+data[i].Name+"</option>";
+//                 $("#type").append(html);
+            
+//                 var extraHtml = "";
+//                 if(data[i].Id > 0){
+//                     extraHtml = '<i class="fa fa-pencil editType"></i>';
+//                 }
+
+//                 var html1 = '<tr><td width=50%><input type="text" class="editableInput" data-id="'+data[i].Id+'" value="'+data[i].Name+'" readonly/></td><td width=50%>'+extraHtml+'</td></tr>';
+//                 $("#typeTable").append(html1);
+//             }
+//         }
+//     },'json');
+// }
+// getTypes();
+
+
+// $(document).on("click",".editType",function(){
+//     var dom = $(this).parent().prev().find(".editableInput");
+//     dom.removeAttr("readonly");
+//     dom.focus();
+// });
+
+// $(document).on("change",".editableInput",function(){
+//     var name = $(this).val();
+//     var id = $(this).attr("data-id");
+
+//     if(getStrlength(name) > 8){
+//         alert("资源分类名长度不能多于4个汉字！");
+//         return;
+//     }
+
+//     $.post("/hnacenter/source/custype?method=2",{
+//         name:name,
+//         id:id,
+//     },function(data){
+//         $(this).attr("readonly",true);
+//         if(data.status){
+//             alert("修改成功！");
+//             getTypes();
+//         }else{
+//             alert("修改失败！");
+//         }
+//     },'json');
+// });
+
+
+// function getStrlength(str) {  
+    
+//     var realLength = 0, len = str.length, charCode = -1;  
+//     for (var i = 0; i < len; i++) {  
+//         charCode = str.charCodeAt(i);  
+//         if (charCode >= 0 && charCode <= 128) realLength += 1;  
+//         else realLength += 2;  
+//     }  
+//     return realLength;  
+// }; 
+    </script>
+
+</body>
+</html>

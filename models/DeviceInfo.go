@@ -383,3 +383,10 @@ func GetTotalDeviceNum() (int64, error) {
 	count, err := model.QueryTable("device_info").Count()
 	return count, err
 }
+
+//根据设备状态查询设备数量
+func GetNumByStatus(status int) (int64, error) {
+	o := orm.NewOrm()
+	count, err := o.QueryTable("device_info").Filter("Status", status).Count()
+	return count, err
+}

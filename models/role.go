@@ -123,6 +123,7 @@ func Addrole(r *Role) (int64, error) {
 }
 
 //根据id取得角色
+
 func GetRoleById(id int64) (role Role) {
 	o := orm.NewOrm()
 	roles := Role{Id: id}
@@ -160,6 +161,7 @@ func Updaterole(r *Role) (int64, error) {
 }
 
 //根据角色id删除角色资源
+
 func DelRoleResourceByRoleId(roldId int64) error {
 	o := orm.NewOrm()
 	_, err := o.QueryTable("role_resources").Filter("role_id", roldId).Delete()
